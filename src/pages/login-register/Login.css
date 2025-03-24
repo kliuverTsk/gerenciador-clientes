@@ -1,0 +1,87 @@
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f0f2f5;
+}
+
+.login-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Estilos para modo oscuro */
+.dark-mode .login-container {
+    background: #1a1a1a;
+}
+
+.dark-mode .login-card {
+    background: #333333;
+    color: white;
+}
+
+.dark-mode input {
+    background: #444444;
+    color: white;
+    border-color: #555555;
+}
+
+.dark-mode .link-text {
+    color: #ccc9c9;
+}
+
+.dark-mode .link-text a:hover {
+    color: #3498db;
+}
+
+.login-card h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #ffffff;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.button-login {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.button-login:hover {
+  background-color: #1565c0;
+}
+
+.link-text {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.link-text a {
+  color: #1976d2;
+  text-decoration: none;
+}
+
+.link-text a:hover {
+  text-decoration: underline;
+}
