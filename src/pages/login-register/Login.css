@@ -18,6 +18,7 @@
 /* Estilos para modo oscuro */
 .dark-mode .login-container {
     background: #1a1a1a;
+    color: white;
 }
 
 .dark-mode .login-card {
@@ -42,7 +43,6 @@
 .login-card h1 {
   text-align: center;
   margin-bottom: 2rem;
-  color: #ffffff;
 }
 
 .form-group {
