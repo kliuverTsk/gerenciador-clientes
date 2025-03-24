@@ -15,12 +15,17 @@ const Register = () => {
       alert('Por favor complete todos los campos')
       return
     }
-    const response = await handleRegister(email, password)
-    if (!response) {
-      alert('Error al intentar registrarse')
-      return
+    try {
+      const response = await handleRegister(email, password)
+      if (response === true) {
+        alert('Usuario registrado exitosamente')
+        navigate('/login')
+      } else {
+        alert('Error al intentar registrarse')
+      }
+    } catch (error) {
+      alert('Error al intentar registrarse: ' + error.message)
     }
-    navigate('/login')
   }
 
   return (

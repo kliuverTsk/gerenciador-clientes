@@ -23,12 +23,17 @@ const Login = () => {
       alert('Por favor complete todos los campos')
       return
     }
-    const response = await handleLogin(email, password)
-    if (!response) {
-      alert('Error al iniciar sesión')
-      return
+    try {
+      const response = await handleRegister(email, password)
+      if (response === true) {
+        alert('iniciando sesion')
+        navigate('/dashboard')
+      } else {
+        alert('Error al intentar iniciar sesion')
+      }
+    } catch (error) {
+      alert('Error al intentar iniciar sesion: ' + error.message)
     }
-    navigate('/dashboard')
       
     
   }
