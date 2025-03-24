@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 const Register = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { handleRegister, error } = useFirebase()
+  const { handleRegister } = useFirebase()
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
@@ -15,15 +15,13 @@ const Register = () => {
       alert('Por favor complete todos los campos')
       return
     }
-    await handleRegister(email, password)
+    const response = await handleRegister(email, password)
+    if (!response) {
+      alert('Error al intentar registrarse')
+      return
+    }
     navigate('/login')
   }
-
-  useEffect(() => {
-    if (error) {
-      alert(error)
-    }
-  }, [error])
 
   return (
     <div className="login-container">

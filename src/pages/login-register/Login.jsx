@@ -6,7 +6,7 @@ import './Login.css'
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { handleLogin, error } = useFirebase()
+  const { handleLogin} = useFirebase()
   const navigate = useNavigate()
 
   // Detectar modo oscuro al cargar
@@ -23,16 +23,15 @@ const Login = () => {
       alert('Por favor complete todos los campos')
       return
     }
-    await handleLogin(email, password)
-    navigate('/dashboard')
-  }
-
-  // Mostrar error si existe
-  useEffect(() => {
-    if (error) {
-      alert(error)
+    const response = await handleLogin(email, password)
+    if (!response) {
+      alert('Error al iniciar sesión')
+      return
     }
-  }, [error])
+    navigate('/dashboard')
+      
+    
+  }
 
   return (
     <div className="login-container">
