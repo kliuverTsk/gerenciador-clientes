@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useFirebase } from '../../context/firebase/contextFirebase'
 import { Link, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import './Login.css'
 
 const Register = () => {
@@ -41,7 +42,9 @@ const Register = () => {
       const response = await handleRegister(email, password)
       if (response === true) {
         toast.success('Usuario registrado exitosamente')
-        navigate('/login')
+        setTimeout(() => {
+          navigate('/login')
+        }, 2000)
       } else {
         toast.error('Error al intentar registrarse')
       }
@@ -54,6 +57,18 @@ const Register = () => {
 
   return (
     <div className="login-container">
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="login-card">
         <h1>Registro de Usuario</h1>
         <form onSubmit={handleSubmit}>

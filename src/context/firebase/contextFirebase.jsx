@@ -23,28 +23,32 @@ export function FirebaseProvider({children}) {
   const handleRegister = async (email, password) => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      alert("Usuario registrado exitosamente");
+      return true;
     } catch (error) {
       setError(error.message);
+      return false;
     }
   };
 
   const handleLogin = async (email, password) => {
     try {
-        await signInWithEmailAndPassword(auth, email, password);
-        alert("Usuario logueado exitosamente");
+      await signInWithEmailAndPassword(auth, email, password);
+      return true;
     } catch (error) {
-        setError(error.message);
+      setError(error.message);
+      return false;
     }
-  }
+  };
+
   const handleLogout = async () => {
     try {
-        await signOut(auth);
-        alert("Usuario deslogueado exitosamente");
+      await signOut(auth);
+      return true;
     } catch (error) {
-        setError(error.message);
+      setError(error.message);
+      return false;
     }
-  }
+  };
 
   return (
     <Context.Provider value={{user, error, handleRegister, handleLogin, handleLogout}}>
