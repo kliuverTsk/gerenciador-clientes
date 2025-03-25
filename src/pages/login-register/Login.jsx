@@ -1,15 +1,16 @@
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useFirebase } from '../../context/firebase/contextFirebase'
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import './Login.css'
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { handleLogin} = useFirebase()
+  const [isLoading, setIsLoading] = useState(false)
+  const { handleLogin } = useFirebase()
   const navigate = useNavigate()
 
-  // Detectar modo oscuro al cargar
   useEffect(() => {
     const darkMode = localStorage.getItem('darkMode');
     if (darkMode === 'true') {
@@ -20,22 +21,30 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!email || !password) {
-      alert('Por favor complete todos los campos')
+      toast.error('Por favor complete todos los campos')
       return
     }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      toast.error('Por favor ingrese un email válido')
+      return
+    }
+
+    setIsLoading(true)
     try {
-      const response = await handleRegister(email, password)
+      const response = await handleLogin(email, password)  
       if (response === true) {
-        alert('iniciando sesion')
+        toast.success('Iniciando sesión')
         navigate('/dashboard')
       } else {
-        alert('Error al intentar iniciar sesion')
+        toast.error('Error al intentar iniciar sesión')
       }
     } catch (error) {
-      alert('Error al intentar iniciar sesion: ' + error.message)
+      toast.error(`Error al intentar iniciar sesión: ${error.message}`)
+    } finally {
+      setIsLoading(false)
     }
-      
-    
   }
 
   return (
@@ -49,6 +58,7 @@ const Login = () => {
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={isLoading}
             />
           </div>
           <div className="form-group">
@@ -57,9 +67,16 @@ const Login = () => {
               placeholder="Contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={isLoading}
             />
           </div>
-          <button type="submit" className='button-login'>Iniciar Sesión</button>
+          <button 
+            type="submit" 
+            className='button-login'
+            disabled={isLoading}
+          >
+            {isLoading ? 'Iniciando...' : 'Iniciar Sesión'}
+          </button>
         </form>
         <p className="link-text">
           ¿No tienes cuenta? <Link to="/register">Registrarse</Link>

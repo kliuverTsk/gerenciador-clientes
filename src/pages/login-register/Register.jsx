@@ -1,30 +1,54 @@
 import { useState, useEffect } from 'react'
 import { useFirebase } from '../../context/firebase/contextFirebase'
-import '../login-register/Login.css'  // Podemos reutilizar los estilos del login
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import './Login.css'
 
 const Register = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const { handleRegister } = useFirebase()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const darkMode = localStorage.getItem('darkMode');
+    if (darkMode === 'true') {
+      document.body.classList.add('dark-mode');
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!email || !password) {
-      alert('Por favor complete todos los campos')
+      toast.error('Por favor complete todos los campos')
       return
     }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      toast.error('Por favor ingrese un email válido')
+      return
+    }
+
+    if (password.length < 6) {
+      toast.error('La contraseña debe tener al menos 6 caracteres')
+      return
+    }
+
+    setIsLoading(true)
     try {
       const response = await handleRegister(email, password)
       if (response === true) {
-        alert('Usuario registrado exitosamente')
+        toast.success('Usuario registrado exitosamente')
         navigate('/login')
       } else {
-        alert('Error al intentar registrarse')
+        toast.error('Error al intentar registrarse')
       }
     } catch (error) {
-      alert('Error al intentar registrarse: ' + error.message)
+      toast.error(`Error al intentar registrarse: ${error.message}`)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -39,6 +63,7 @@ const Register = () => {
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={isLoading}
             />
           </div>
           <div className="form-group">
@@ -47,9 +72,16 @@ const Register = () => {
               placeholder="Contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={isLoading}
             />
           </div>
-          <button type="submit" className='button-login'>Registrarse</button>
+          <button 
+            type="submit" 
+            className='button-login'
+            disabled={isLoading}
+          >
+            {isLoading ? 'Registrando...' : 'Registrarse'}
+          </button>
         </form>
         <p className="link-text">
           ¿Ya tienes cuenta? <Link to="/login">Inicia Sesión</Link>
